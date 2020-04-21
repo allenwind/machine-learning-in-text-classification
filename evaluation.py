@@ -7,6 +7,20 @@ import numpy as np
 __all__ = ["plot_roc", "plot_rocs", "plot_pc", "plot_pcs",
            "plot_label_distribution"]
 
+def plot_f1_curve(y_true, y_pred, label, show=True):
+    precision, recall, threshold = metrics.precision_recall_curve(y_true, y_pred)
+    f1 = 2 * precision * recall / (precision + recall)
+    plt.plot(threshold, f1[:-1], label="{} f1-curve".format(label))
+    i = np.argmax(f1)
+    plt.plot(threshold[i], f1[i], "o", label="max f1")
+
+    plt.xlabel("threshold")
+    plt.ylabel("f1")
+    plt.title("f1 curve")
+    plt.legend(loc="lower right")
+    if show:
+        plt.show()
+
 def plot_roc(y_true, y_predict, label, show=True, baseline=False, save=False):
     fpr, tpr, threshold = metrics.roc_curve(y_true, y_predict, pos_label=1)
     auc = metrics.auc(fpr, tpr)

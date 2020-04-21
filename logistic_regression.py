@@ -7,13 +7,13 @@ from sklearn.preprocessing import Normalizer
 from sklearn.pipeline import Pipeline
 
 from dataset import read_dataset, read_stop_words
-from evaluation import plot_rocs, plot_pcs
+from evaluation import plot_rocs, plot_pcs, plot_f1_curve
 from tokenizer import jieba_tokenizer, char_tokenizer
 
 # 读取数据
 data_path = "dataset/weibo_senti_100k.csv"
 stop_words_path = "dataset/stop_words.txt"
-X, y = read_dataset(data_path)
+X, y = read_dataset(data_path, noe=False)
 stop_words = read_stop_words(stop_words_path)
 
 # 交叉验证
@@ -40,4 +40,5 @@ model.fit(X_train, y_train)
 y_train_pred = model.predict_proba(X_train)[:, 1]
 y_test_pred = model.predict_proba(X_test)[:, 1]
 plot_rocs([y_train, y_test], [y_train_pred, y_test_pred], ["train", "test"])
-plot_pcs([y_train, y_test], [y_train_pred, y_test_pred], ["train", "test"])
+plot_pcs([y_train, y_test], [y_train_pred, y_test_pred], ["train", "test"], show=False)
+plot_f1_curve(y_test, y_test_pred, "test")
