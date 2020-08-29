@@ -2,19 +2,7 @@ import numpy as np
 import collections
 import itertools
 
-class Transformer:
 
-    def fix(self, X):
-        # 参数学习
-        pass
-
-    def fit_transform(self, X):
-        # 参数学习并返回变换结果
-        pass
-
-    def transform(self, X):
-        # 返回变换结果
-        pass
 
 def global_tf(X):
     # 快速统计所有文档词频
@@ -69,15 +57,18 @@ def tf_idf(X):
     idf = len(X) / np.log(df+1)
     return tf * idf
 
-def cbow(X):
-    pass
-
 def ngram(X, n=1):
-    pass
+    ngram_Xs = []
+    for x in X:
+        s = []
+        for i in range(len(s)-n+1):
+            s.append(s[i:i+n])
+        ngram_Xs.append(s)
+    return ngram_Xs
 
-def vsm(X, max_freq=0, min_freq=0):
+def vsm(X, max_freq=0, min_freq=0, stop_words=set()):
     # 全局词表
-    vocab = set(itertools.chain(*X))
+    vocab = set(itertools.chain(*X)) - stop_words
     # 给每个词一个全局索引
     w2i = {w:i for i, w in enumerate(vocab)}
     vs = np.zeros((len(X), len(vocab)))
@@ -87,14 +78,14 @@ def vsm(X, max_freq=0, min_freq=0):
     return vs
 
 def test():
-    from dataset import read_dataset
+    from dataset import load_weibo_senti_100k
     import matplotlib.pyplot as plt
-    data_path = "dataset/weibo_senti_100k.csv"
-    X, y = read_dataset(data_path)
+    X, y = load_weibo_senti_100k()
     X = [list(i) for i in X[:10000]]
     r = tf_idf(X)
     print(r.shape)
     plt.imshow(r)
     plt.show()
 
-test()
+if __name__ == "__main__":
+    test()
