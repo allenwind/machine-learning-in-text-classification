@@ -16,7 +16,7 @@ def build_global_freq_chars(X):
     return collections.Counter(itertools.chain(*X))
 
 class VSMVectorizer:
-    """向量空间模型"""
+    """向量空间模型,zero-one vectors"""
 
     def __init__(self, min_freq=0, max_freq=0, stopwords=set()):
         pass

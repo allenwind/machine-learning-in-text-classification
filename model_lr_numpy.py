@@ -14,7 +14,7 @@ class LogisticRegression:
         self.weights = np.zeros(len(X[0])+1)
         X = np.hstack([X, np.ones((len(X), 1))])
 
-        pos_count = 0
+        p_count = 0
         t = 0
         while t <= self.epochs:
             index = np.random.randint(0, len(y) - 1)
@@ -22,13 +22,13 @@ class LogisticRegression:
             label = y[index]
 
             if label == self._predict_one(sample):
-                pos_count += 1
-                if pos_count > self.epochs:
+                p_count += 1
+                if p_count > self.epochs:
                     break
                 continue
 
             t += 1
-            pos_count = 0
+            p_count = 0
 
             wx = np.dot(self.weights, sample)
             exp_wx = np.exp(wx)
